@@ -42,6 +42,7 @@ $('sum').update(friend.getDisplayName());
   }
  
 };
+</script>
 <form id="logWork">
 <p>
 <label>Eddig ennyit lapátoltál:</label>
