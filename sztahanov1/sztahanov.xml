@@ -1,50 +1,51 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Module>
-	<ModulePrefs title="TomiSztahanov"
-		author="Zsenyuk Tomi"
-		author_email="zsenyukt@gmail.com">
-	</ModulePrefs>
-  	<Content type="html">
-	<![CDATA[
+<ModulePrefs title="TomiSztahanov"
+author="Zsenyuk Tomi"
+author_email="zsenyukt@gmail.com">
+</ModulePrefs>
+   <Content type="html">
+<![CDATA[
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/prototype/1.6.0.2/prototype.js"></script>
 
 <script tpe="text/javascript">
-var App = {
- 
-  // ezt a függvényt hívjuk meg az alkalmazás betöltődésekor
-  init: function() {
-    // egy adatlekérés objektumot hozunk létre
-    var req = opensocial.newDataRequest();
-    // a kéréshez hozzáadjuk az alkalmazás tulajdonosának lekérdezését, a választ
-    // "owner" néven fogjuk visszakapni
-    req.add(req.newFetchPersonRequest("OWNER"), "owner");
-    // egy csoportot definiálunk: az alkalmazás tulajdonosának az ismerősei
-    var usergroup = opensocial.newIdSpec({"userId": "OWNER", "groupId": "FRIENDS"});
-    // a kéréshez hozzáadjuk az előbb definiált csoport lekérdezését, a választ
-    // "ownerfriends" néven fogjuk visszakapni
-    req.add(req.newFetchPeopleRequest(usergroup, {}), "ownerfriends");
-    // elküldjük a lekérdezést, a függvény paramétere egy másik függvény,
-    // ami akkor kerül meghívásra, amikor a szervertől megérkezik a válasz
-    req.send(App.displayContent);
-  },
- 
-  // ezt a függvényt hívjuk meg, amikor a szerverről megérkeznek az adatok
-  displayContent: function(data) {
-    var owner = data.get("owner").getData();
-    // például 
-           owner.getDisplayName()
-    var friends = data.get("ownerfriends").getData();
-    friends.each(function(friend) {
-      // például 
-           friend.getDisplayName()
-    });
-  }
- 
-};
+var sztahanov = function() {
+var hours = 0;
+
+var logWork = function (event) {
+Event.stop(event);
+var hoursLogged = + $F('hours');
+if(hoursLogged > 0) {
+$('hours').value = '';
+hours += hoursLogged;
+$('sum').update(hours + ' órát');
+}
+}
+
+return {
+init: function() {
+$('logWork').observe('submit',logWork);
+}
+
+}
+}();
 gadgets.util.registerOnLoadHandler(sztahanov.init);
 </script>
-	]]>
-	</Content>
+<form id="logWork">
+<p>
+<label>Eddig ennyit lapátoltál:</label>
+<strong id="sum" class="sum">semennyit</strong>
+</p>
+<p>
+<label>Ma ennyit:</label>
+<input type="text" size="2" id="hours"/> órát
+<button type="submit" id="saveHours">Mehet</button>
+</p>
+</form>
+]]>
+</Content>
 </Module>
+
+
 
